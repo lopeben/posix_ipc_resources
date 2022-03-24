@@ -1,5 +1,3 @@
-# python_posix_ipc_shm
-
 >>> shmem.unlink()
 >>> shmem = posix_ipc.SharedMemory('/shard', flags=posix_ipc.O_CREX, mode=0o600, size=0)
 >>> os.ftruncate(shmem.fd, 4096)
