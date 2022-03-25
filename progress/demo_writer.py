@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-import os.path
-import mmap
-import posix_ipc
 import json
-
 import posix_shm as ps
 
 
@@ -15,9 +10,10 @@ def main():
 
     data = {}
     data['temperature'] = 27
-    data['humidity'] = 63
+    data['humidity'] = 65
+    jdata = json.dumps(data)
 
-    ps.shm_write(fh, data)   
+    ps.shm_write(fh, jdata)   
 
 
 if __name__ == "__main__":
