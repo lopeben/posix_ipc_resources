@@ -1,4 +1,4 @@
-# python_posix_ipc_shm
+# posix_ipc_resources
 
 Transforming to a class
  
