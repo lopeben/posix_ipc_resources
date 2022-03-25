@@ -8,11 +8,11 @@ def main():
 	
 	shm = mmap_shm()
 
-	fh = shm.shm_create()
+	fh = shm.shm_open()
 
 	data = {}
 	data['temperature'] = 27
-	data['humidity'] = 65
+	data['humidity'] = 61
 	jdata = json.dumps(data)
 
 	shm.shm_write(fh, jdata)   

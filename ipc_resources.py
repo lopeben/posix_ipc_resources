@@ -4,13 +4,17 @@ import mmap
 import posix_ipc
 
 class mmap_shm:
+	
+	READ_ONLY  = mmap.ACCESS_READ
+	WRITE_ONLY = mmap.ACCESS_WRITE
+	
 	def __init__(self):
 		self.SH_PATH = '/dev/shm'
 		self.SH_FILENAME = '/shfile'
 		self.BUFFER_SIZE = 64
 
 
-	def shm_create(self):    
+	def create(self):    
 		if os.path.exists(self.SH_PATH + self.SH_FILENAME):
 			os.remove(self.SH_PATH + self.SH_FILENAME)
 			
@@ -29,11 +33,11 @@ class mmap_shm:
 		return shm_handle
 		
 
-	def shm_destroy(self):
+	def destroy(self):
 		os.remove(self.SH_PATH + self.SH_FILENAME)
 
 
-	def shm_open(self):
+	def open(self, mode):
 		if os.path.exists(self.SH_PATH + self.SH_FILENAME):
 			shref = posix_ipc.SharedMemory(self.SH_FILENAME, flags=0, mode=0o600, size=0)
 		else:
@@ -42,21 +46,21 @@ class mmap_shm:
 		if (None == shref) :
 			shm_handle = None
 		else:
-			shm_handle = mmap.mmap(shref.fd, length=0, access=mmap.ACCESS_READ, offset=0)
+			shm_handle = mmap.mmap(shref.fd, length=0, access=mode, offset=0)
 
 		return shm_handle
 		
 		
-	def shm_close(self, shm_handle):
+	def close(self, shm_handle):
 		shm_handle.close()
 
 
-	def shm_read(self, shm_handle):
+	def read(self, shm_handle):
 		shm_handle.seek(0x00)
 		data = shm_handle.read().decode('utf8').rstrip('\x00')         
 		return data  
 
 
-	def shm_write(self, shm_handle, data):
+	def write(self, shm_handle, data):
 		shm_handle.seek(0x00)
 		shm_handle.write(bytes(data, encoding="utf8"))
